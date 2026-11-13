@@ -1,8 +1,11 @@
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -O2
 
-banker: main.c input.c input.h
-	$(CC) $(CFLAGS) main.c input.c -o banker
+SOURCES = $(wildcard *.c)
+HEADERS = $(wildcard *.h)
+
+banker: $(SOURCES) $(HEADERS)
+	$(CC) $(CFLAGS) $(SOURCES) -o banker
 
 .PHONY: clean
 clean:

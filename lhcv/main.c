@@ -1,5 +1,6 @@
 #include "input.h"
 #include "banker.h"
+#include "output.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,7 +13,8 @@ int main(int argc, char **argv)
         fprintf(stderr, "Erro: nao foi possivel inicializar as matrizes do banker.\n");
         valid = 0;
     }
-    /* As proximas etapas processarao os comandos ja validados. */
+    if (valid)
+        valid = write_results(&banker);
     banker_free(&banker);
     free_input(&input);
     return valid ? EXIT_SUCCESS : EXIT_FAILURE;

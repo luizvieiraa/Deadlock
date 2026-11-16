@@ -4,6 +4,11 @@
 /lhcv/result.txt
 
 # Executaveis e arquivos objeto
+/banker
+/banker.exe
+/customer.txt
+/commands.txt
+/result.txt
 /lhcv/banker
 /lhcv/banker.exe
 *.o

@@ -24,6 +24,17 @@ O comando gera o executável `banker`. O Makefile utiliza `gcc` com `-std=c11 -W
 make CC=clang
 ```
 
+### Compilação na raiz para o autocheck
+
+O Makefile da raiz também compila `lhcv/banker.c`, gerando `banker` na raiz:
+
+```bash
+make
+./banker 10 5 7
+```
+
+Nesse modo, `customer.txt` e `commands.txt` devem estar na raiz, e `result.txt` será gerado nela. O pacote de entrega mantém `lhcv/banker.c` e `lhcv/Makefile`.
+
 ## Arquivos de entrada
 
 Antes de executar, coloque os anexos `customer.txt` e `commands.txt` fornecidos pelo professor dentro de `lhcv`, junto ao executável. Esses arquivos não são versionados; devem ser obtidos no Classroom após clonar o repositório.

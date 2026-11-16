@@ -486,3 +486,401 @@ The customer 2 request 0 1 0 was denied because exceed its maximum allocation
 
 Conclusao complementar: compilacao por make e execucao do exemplo em Linux confirmadas pelo aluno. Saida corresponde ao exemplo do professor. make clean foi executado antes da compilacao; a ausencia do executavel apos limpeza nao foi verificada separadamente. As demais limitacoes de injecao de falhas permanecem.
 
+
+
+REVALIDACAO APOS CONSOLIDACAO EM UM UNICO .c
+UTC: 2026-11-16T13:06:30.898927+00:00
+Ambiente: Windows/GCC. As evidencias WSL anteriores correspondem a versao modular; nova execucao Linux ainda pendente.
+Compilacao: gcc -std=c11 -Wall -Wextra -Wpedantic -Werror -O2 lhcv/banker.c -o banker.exe
+Retorno: 0
+stderr: ''
+SHA256 banker.c: 886c2e639a2bced3a1fd65b2ecba0945c85ed8548c1ea46eb0d455d05d844e3a
+PASS 1: Exemplo do professor
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: a8a6da37fc44011d184523b49970e24e760e663d16a997e20294cf164c09599f
+PASS 2: Sem argumentos
+argv: ()
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro: uso: ./banker recurso1 [recurso2 ...]\n'
+PASS 3: Negativo
+argv: ('-1', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro: cada argumento deve ser um inteiro nao negativo entre 0 e INT_MAX.\n'
+PASS 4: Overflow
+argv: ('2147483648', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro: cada argumento deve ser um inteiro nao negativo entre 0 e INT_MAX.\n'
+PASS 5: Texto
+argv: ('abc', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro: cada argumento deve ser um inteiro nao negativo entre 0 e INT_MAX.\n'
+PASS 6: Decimal
+argv: ('1.5', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro: cada argumento deve ser um inteiro nao negativo entre 0 e INT_MAX.\n'
+PASS 7: Argumento vazio
+argv: ('', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro: cada argumento deve ser um inteiro nao negativo entre 0 e INT_MAX.\n'
+PASS 8: Poucos recursos
+argv: ('10', '5')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 9: Recursos excedentes
+argv: ('10', '5', '7', '1')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 10: customer ausente
+argv: ('10', '5', '7')
+customer.txt: None
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 0: nao foi possivel abrir o arquivo.\n'
+PASS 11: customer vazio
+argv: ('10', '5', '7')
+customer.txt: ''
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 0: arquivo vazio.\n'
+PASS 12: customer linha em branco
+argv: ('10', '5', '7')
+customer.txt: '\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 13: customer byte nulo
+argv: ('10', '5', '7')
+customer.txt: '\x00'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: falha de leitura, byte nulo ou memoria insuficiente.\n'
+PASS 14: commands ausente
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: None
+retorno: 1; stderr: 'Erro em commands.txt, linha 0: nao foi possivel abrir o arquivo.\n'
+PASS 15: commands vazio
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: ''
+retorno: 1; stderr: 'Erro em commands.txt, linha 0: arquivo vazio.\n'
+PASS 16: commands linha em branco
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: '\n'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 17: commands byte nulo
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: '\x00'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: falha de leitura, byte nulo ou memoria insuficiente.\n'
+PASS 18: customer malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 19: customer malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3,1'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 20: customer malformado
+argv: ('10', '5', '7')
+customer.txt: '7;5;3'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 21: customer malformado
+argv: ('10', '5', '7')
+customer.txt: '7,,3'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 22: customer malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3,'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 23: customer malformado
+argv: ('10', '5', '7')
+customer.txt: '-1,5,3'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 24: customer malformado
+argv: ('10', '5', '7')
+customer.txt: '2147483648,5,3'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 25: customer malformado
+argv: ('10', '5', '7')
+customer.txt: 'a,5,3'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 26: customer malformado
+argv: ('10', '5', '7')
+customer.txt: '7 5 3'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 1: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 27: customer malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro em customer.txt, linha 2: linha invalida: esperado um inteiro nao negativo por recurso, separado por virgulas.\n'
+PASS 28: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'XX 0 0 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 29: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 30: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RL'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 31: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ0 0 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 32: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 5 0 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 33: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ -1 0 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 34: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 35: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 0 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 36: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 -1 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 37: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 2147483648 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 38: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0x1 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 39: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RL 0 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 40: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RL 0 0 0 0 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 41: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: '* 0'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 42: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: '**'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 43: commands malformado
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 0 0 lixo'
+retorno: 1; stderr: 'Erro em commands.txt, linha 1: comando invalido: use RQ/RL, cliente existente e um inteiro nao negativo por recurso, ou apenas *.\n'
+PASS 44: Liberacao excessiva
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RL 0 1 0 0'
+retorno: 1; stderr: 'Erro: liberacao invalida do cliente 0 no comando 1.\n'
+PASS 45: Falha de abertura da saida
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n'
+commands.txt: 'RQ 0 0 2 1\nRQ 2 3 0 2\nRQ 1 2 0 0\nRQ 4 0 0 2\nRL 0 0 1 1\nRQ 3 2 1 1\n*\nRQ 4 4 0 0\nRQ 1 1 0 2\nRQ 0 0 2 0\nRQ 2 0 1 0\n'
+retorno: 1; stderr: 'Erro: nao foi possivel abrir result.txt para escrita.\n'
+PASS 46: CRLF
+argv: ('10', '5', '7')
+customer.txt: '7,5,3\r\n3,2,2\r\n9,0,2\r\n2,2,2\r\n4,3,3\r\n'
+commands.txt: 'RQ 0 0 2 1\r\nRQ 2 3 0 2\r\nRQ 1 2 0 0\r\nRQ 4 0 0 2\r\nRL 0 0 1 1\r\nRQ 3 2 1 1\r\n*\r\nRQ 4 4 0 0\r\nRQ 1 1 0 2\r\nRQ 0 0 2 0\r\nRQ 2 0 1 0\r\n'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: a8a6da37fc44011d184523b49970e24e760e663d16a997e20294cf164c09599f
+PASS 47: Um cliente/recurso
+argv: ('5',)
+customer.txt: '5'
+commands.txt: 'RQ 0 5\nRL 0 5\n*'
+retorno: 0; stderr: ''
+PASS 48: Recursos zero
+argv: ('0', '0')
+customer.txt: '0,0'
+commands.txt: 'RQ 0 0 0\nRL 0 0 0\n*'
+retorno: 0; stderr: ''
+PASS 49: INT_MAX
+argv: ('2147483647',)
+customer.txt: '2147483647'
+commands.txt: 'RQ 0 2147483647\nRL 0 2147483647\n*'
+retorno: 0; stderr: ''
+PASS 50: Quatro recursos
+argv: ('4', '5', '6', '7')
+customer.txt: '2,3,4,5\n1,1,1,1'
+commands.txt: 'RQ 0 1 2 3 4\nRL 0 1 1 1 1\n*'
+retorno: 0; stderr: ''
+PASS 51: 80 clientes/70 recursos
+argv: ('2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2')
+customer.txt: '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1'
+commands.txt: 'RQ 79 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n*'
+retorno: 0; stderr: ''
+PASS 52: Recusa insegura e estado preservado
+argv: ('1',)
+customer.txt: '2\n2'
+commands.txt: 'RQ 0 1\n*'
+retorno: 0; stderr: ''
+PASS 53: Modelo Python independente - sequencia 1
+argv: ('3', '6', '3', '4')
+customer.txt: '1,6,2,4'
+commands.txt: 'RL 0 0 0 0 0\nRQ 0 0 6 4 0\nRL 0 0 0 0 0\nRL 0 0 0 0 0\nRQ 0 0 4 0 1\nRL 0 0 1 0 1\nRQ 0 0 3 0 5\nRQ 0 2 1 4 4\nRQ 0 2 6 0 4\nRQ 0 3 1 0 0\nRQ 0 0 6 2 1\nRL 0 0 0 0 0\nRL 0 0 1 0 0\nRQ 0 1 5 1 1\nRL 0 0 2 0 0\nRQ 0 3 3 1 0\nRQ 0 4 7 0 0\nRQ 0 4 4 3 4\nRQ 0 0 4 0 0\nRQ 0 0 7 0 5\nRQ 0 0 6 3 0\nRQ 0 3 6 0 1\nRQ 0 2 6 0 1\nRQ 0 1 6 0 5\nRQ 0 1 0 4 1\nRQ 0 1 6 4 4\nRQ 0 4 5 0 1\nRQ 0 4 4 2 0\nRQ 0 3 7 4 5\nRQ 0 0 2 1 4'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: a6a9c16f1cc4c835c427772078aa8594177982a3dac58478c739679399ba7d52
+PASS 54: Modelo Python independente - sequencia 2
+argv: ('3', '5')
+customer.txt: '3,5\n2,4\n2,4'
+commands.txt: 'RQ 1 1 6\nRQ 0 3 3\nRL 2 0 0\nRL 1 0 0\nRQ 2 3 1\nRQ 0 4 4\nRL 0 3 2\nRQ 2 3 0\nRQ 2 2 0\nRQ 2 4 2\nRQ 2 4 5\nRQ 2 4 6\nRQ 0 1 3\nRL 1 0 0\nRQ 1 4 1\nRL 1 0 0\nRQ 1 3 5\nRQ 1 3 6\nRL 2 0 0\nRL 1 0 0\nRL 1 0 0\nRQ 1 3 5\nRL 1 0 0\nRQ 1 3 3\nRQ 0 3 5\nRQ 1 0 3\nRL 1 0 0\nRQ 1 1 4\nRQ 1 2 3\nRQ 0 3 4'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 9f42077c8231eeaad60d9e35c39fea0b904b344550b3ea1e8efa0f87c55571a7
+PASS 55: Modelo Python independente - sequencia 3
+argv: ('6', '7')
+customer.txt: '4,3\n2,6\n1,2\n1,6\n3,1\n6,0'
+commands.txt: 'RQ 5 2 7\nRQ 1 6 8\nRL 0 0 0\nRQ 1 2 3\nRQ 2 7 6\nRQ 1 2 2\nRQ 5 7 6\nRQ 5 7 1\nRL 4 0 0\nRQ 3 4 0\nRQ 3 1 6\nRQ 0 1 3\nRQ 0 0 6\nRQ 0 2 2\nRQ 5 1 5\nRQ 4 7 6\nRQ 1 0 7\nRQ 3 4 1\nRL 1 1 3\nRQ 1 3 7\nRQ 5 0 1\nRQ 4 2 8\nRQ 0 1 0\nRL 3 0 0\nRQ 0 7 5\nRQ 1 0 3\nRQ 4 6 5\nRL 3 0 0\nRQ 0 0 1\nRL 3 0 0'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 21af558a0b385d9e26b4b4c6706a45f529e29bfdbc6dbe92db6ff0fee8784d6d
+PASS 56: Modelo Python independente - sequencia 4
+argv: ('8', '8')
+customer.txt: '5,5\n6,2\n4,0\n7,3'
+commands.txt: 'RL 1 0 0\nRL 3 0 0\nRQ 0 4 6\nRQ 3 0 3\nRQ 1 9 4\nRL 3 0 0\nRQ 0 3 1\nRQ 0 7 5\nRQ 1 7 4\nRQ 1 3 0\nRQ 0 8 5\nRL 0 1 1\nRQ 3 2 1\nRQ 1 0 2\nRQ 3 5 2\nRQ 0 8 6\nRL 1 1 1\nRQ 1 6 8\nRQ 3 7 1\nRQ 3 9 5\nRL 1 2 1\nRQ 2 1 0\nRL 2 1 0\nRQ 0 9 7\nRQ 2 5 5\nRQ 3 5 0\nRQ 2 4 6\nRQ 1 1 3\nRQ 2 5 8\nRL 3 0 1'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 7d5d02f22bf23a59a1c9acdea3a54542452982a54276b6fde90f536704dc2611
+PASS 57: Modelo Python independente - sequencia 5
+argv: ('4',)
+customer.txt: '1\n2\n3\n1\n3\n1'
+commands.txt: 'RQ 2 4\nRQ 4 2\nRQ 2 1\nRQ 4 2\nRL 1 0\nRQ 1 3\nRL 5 0\nRQ 1 4\nRQ 5 0\nRL 5 0\nRQ 5 3\nRQ 0 4\nRQ 1 3\nRQ 3 2\nRQ 5 1\nRQ 4 0\nRQ 2 5\nRQ 3 1\nRL 5 0\nRL 5 1\nRQ 1 5\nRL 0 0\nRQ 5 4\nRL 5 0\nRQ 4 3\nRQ 3 2\nRL 3 0\nRQ 4 3\nRL 3 0\nRL 5 0'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 850179452d0156f422d115371cbfd5b69b8e509c508f98ab4270ff1320c0e969
+PASS 58: Modelo Python independente - sequencia 6
+argv: ('3', '2', '4', '5')
+customer.txt: '2,1,0,2\n3,0,4,4'
+commands.txt: 'RQ 0 0 1 4 2\nRQ 1 4 2 4 3\nRQ 1 4 2 1 4\nRL 1 0 0 0 0\nRQ 1 0 3 4 0\nRQ 0 2 1 2 6\nRL 0 0 0 0 0\nRL 0 0 0 0 0\nRL 1 0 0 0 0\nRQ 0 1 0 5 0\nRQ 1 1 1 4 4\nRQ 0 2 0 0 2\nRQ 0 2 0 1 2\nRQ 1 4 3 5 1\nRQ 1 1 2 5 6\nRQ 0 2 3 3 2\nRL 1 0 0 0 0\nRQ 0 3 2 2 1\nRQ 0 4 3 2 5\nRQ 0 3 2 1 0\nRQ 1 1 1 3 6\nRQ 1 0 1 4 0\nRL 0 1 0 0 1\nRQ 0 2 0 3 0\nRQ 1 0 1 4 5\nRL 1 0 0 0 0\nRL 0 1 0 0 0\nRQ 0 1 3 4 6\nRQ 0 3 0 0 6\nRQ 0 3 2 3 0'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 09e9e738533c670c21f563a0d1264a38778d76b5272f72b10d618c678f842cc7
+PASS 59: Modelo Python independente - sequencia 7
+argv: ('1', '4')
+customer.txt: '0,4\n0,1\n1,4\n0,3\n1,1\n1,2'
+commands.txt: 'RQ 1 2 1\nRQ 2 0 5\nRQ 0 0 5\nRQ 3 1 2\nRQ 1 1 5\nRQ 0 2 4\nRQ 5 2 3\nRQ 2 1 3\nRQ 0 2 3\nRQ 0 1 5\nRQ 4 1 5\nRQ 0 0 2\nRQ 0 0 2\nRQ 5 1 5\nRQ 3 1 0\nRQ 4 2 2\nRQ 1 0 2\nRQ 4 2 4\nRL 4 0 0\nRQ 4 0 1\nRL 2 0 1\nRQ 0 0 5\nRL 5 0 0\nRQ 4 2 2\nRQ 2 0 3\nRQ 2 2 0\nRL 3 0 0\nRQ 0 1 0\nRL 5 0 0\nRL 1 0 0'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: dd4174dbc299e9f2896ab1023c7b3255c17dac2deda60aebd814a25f7cb9f6ae
+PASS 60: Modelo Python independente - sequencia 8
+argv: ('7', '4')
+customer.txt: '2,2\n0,2\n0,0\n6,2\n2,0\n6,2'
+commands.txt: 'RQ 4 2 0\nRQ 2 3 3\nRQ 3 5 5\nRQ 4 6 4\nRQ 0 0 4\nRQ 4 7 0\nRQ 1 7 3\nRQ 0 1 2\nRQ 0 8 3\nRL 4 2 0\nRQ 5 4 2\nRL 5 3 2\nRQ 0 4 0\nRQ 5 7 3\nRQ 0 7 0\nRQ 0 6 1\nRQ 4 3 5\nRQ 5 2 5\nRL 4 0 0\nRQ 1 7 1\nRQ 2 3 2\nRL 2 0 0\nRQ 0 6 0\nRQ 2 3 1\nRQ 2 5 1\nRL 4 0 0\nRL 2 0 0\nRQ 3 2 0\nRQ 0 1 4\nRL 2 0 0'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: d44ea73766b5b1dcb0e1cb7e099a6708d87b63b12a67c0e42f5745dde8dc393f
+PASS 61: Modelo Python independente - sequencia 9
+argv: ('3', '6', '6', '8', '6')
+customer.txt: '1,1,3,2,4\n0,4,1,5,2\n0,6,0,4,4\n3,0,5,2,1\n3,6,4,7,0\n1,3,6,1,2\n3,4,4,3,3'
+commands.txt: 'RL 3 0 0 0 0 0\nRQ 3 2 6 3 9 7\nRQ 6 3 5 0 1 1\nRQ 1 2 7 6 8 4\nRL 0 0 0 0 0 0\nRQ 3 1 2 2 4 6\nRL 1 0 0 0 0 0\nRQ 5 4 2 2 8 1\nRQ 6 2 0 5 7 6\nRQ 5 3 0 3 7 0\nRL 5 0 0 0 0 0\nRL 4 0 0 0 0 0\nRQ 1 3 5 7 3 2\nRQ 6 1 0 6 5 5\nRQ 0 0 3 3 9 2\nRL 0 0 0 0 0 0\nRL 3 0 0 0 0 0\nRQ 4 1 7 3 5 5\nRQ 5 3 6 4 0 5\nRL 6 0 0 0 0 0\nRQ 1 3 0 5 2 5\nRQ 6 2 0 6 6 0\nRQ 5 4 7 4 6 7\nRL 5 0 0 0 0 0\nRL 1 0 0 0 0 0\nRL 3 0 0 0 0 0\nRQ 1 4 4 4 7 2\nRQ 6 3 6 6 9 3\nRQ 1 0 1 1 7 2\nRQ 3 4 1 5 0 3'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: b8c43368a56e035dd1296e86b39d0ea9d0c96632ca9182ec9d18423f890f3c4d
+PASS 62: Modelo Python independente - sequencia 10
+argv: ('3', '3')
+customer.txt: '0,1\n1,3\n2,0\n2,0\n1,1\n1,0\n2,0'
+commands.txt: 'RQ 4 3 3\nRQ 0 0 3\nRQ 6 1 2\nRQ 1 4 1\nRL 6 0 0\nRL 5 0 0\nRL 2 0 0\nRQ 4 3 4\nRQ 5 2 0\nRQ 6 4 4\nRQ 6 2 1\nRQ 6 1 3\nRQ 1 4 0\nRQ 0 1 4\nRL 4 0 0\nRQ 2 0 4\nRQ 3 1 0\nRQ 4 3 3\nRQ 2 4 3\nRQ 4 0 3\nRQ 3 2 2\nRQ 5 0 2\nRQ 0 4 0\nRL 2 0 0\nRL 0 0 0\nRL 4 0 0\nRQ 5 2 3\nRQ 4 0 1\nRQ 2 4 0\nRQ 4 3 2'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 8399a08a6082ef51bb6f7a609d0947217a0131d6b1470b0ecf62014e8ad6e095
+PASS 63: Modelo Python independente - sequencia 11
+argv: ('2', '6', '1')
+customer.txt: '0,5,1'
+commands.txt: 'RQ 0 2 1 1\nRQ 0 1 6 2\nRQ 0 0 6 1\nRQ 0 3 0 2\nRQ 0 0 2 1\nRQ 0 1 0 0\nRQ 0 2 4 1\nRQ 0 3 5 0\nRQ 0 0 1 0\nRL 0 0 2 0\nRL 0 0 0 0\nRL 0 0 1 1\nRQ 0 3 2 1\nRL 0 0 0 0\nRQ 0 3 7 2\nRL 0 0 0 0\nRQ 0 2 7 0\nRL 0 0 0 0\nRQ 0 2 6 1\nRL 0 0 0 0\nRQ 0 1 2 0\nRQ 0 2 7 1\nRQ 0 2 4 1\nRQ 0 2 7 1\nRQ 0 0 4 2\nRQ 0 0 4 1\nRQ 0 2 7 2\nRL 0 0 3 1\nRQ 0 2 3 1\nRQ 0 3 5 2'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: de3e7628aba7b34bf20a2fd1f7f427ccbe0b1174dd21260031cf657e7d4d97d1
+PASS 64: Modelo Python independente - sequencia 12
+argv: ('7', '1', '1', '8')
+customer.txt: '4,0,0,7\n5,0,1,2\n5,1,0,1\n1,1,0,2\n0,0,1,3'
+commands.txt: 'RQ 4 2 0 2 8\nRQ 3 1 2 0 7\nRQ 2 4 1 2 7\nRL 2 0 0 0 0\nRQ 0 7 1 1 7\nRQ 4 5 2 0 4\nRL 4 0 0 0 0\nRQ 4 5 1 0 0\nRQ 1 0 0 0 2\nRQ 0 1 2 0 6\nRQ 3 5 2 2 2\nRL 1 0 0 0 1\nRL 3 0 0 0 0\nRQ 1 8 1 2 9\nRQ 1 8 1 1 7\nRQ 1 3 0 2 7\nRQ 0 0 1 1 5\nRQ 1 0 2 0 9\nRQ 3 3 2 1 4\nRQ 1 6 1 2 1\nRQ 2 1 0 0 7\nRL 1 0 0 0 1\nRQ 2 8 0 1 9\nRQ 4 8 1 2 4\nRQ 2 0 0 2 1\nRL 4 0 0 0 0\nRQ 3 4 2 1 0\nRL 0 0 0 0 0\nRQ 1 3 2 2 2\nRQ 4 2 2 1 9'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 11844216c44421c052ed7194d1b1f48334f2d19015e7b2fa57740eac20231e0c
+PASS 65: Modelo Python independente - sequencia 13
+argv: ('1', '3')
+customer.txt: '0,2\n1,1\n0,1\n0,3\n0,0'
+commands.txt: 'RQ 4 1 0\nRL 1 0 0\nRQ 1 2 3\nRQ 3 1 0\nRQ 3 0 0\nRQ 1 1 2\nRQ 3 2 2\nRQ 1 1 2\nRQ 0 1 1\nRQ 1 0 1\nRQ 4 2 4\nRL 2 0 0\nRL 4 0 0\nRQ 2 1 3\nRQ 0 2 1\nRQ 1 1 3\nRQ 3 0 0\nRL 3 0 0\nRQ 1 1 0\nRQ 2 1 1\nRQ 1 1 4\nRQ 1 0 2\nRL 3 0 0\nRQ 4 1 4\nRQ 0 0 0\nRQ 3 1 1\nRQ 0 1 3\nRQ 0 2 3\nRQ 0 2 2\nRL 1 0 1'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 6c39320438af8a3186714ed8c80a759297c7a01aa4c3573639ce0a28b4b8b1ea
+PASS 66: Modelo Python independente - sequencia 14
+argv: ('5', '5')
+customer.txt: '4,1\n3,0\n2,4'
+commands.txt: 'RL 1 0 0\nRL 1 0 0\nRL 0 0 0\nRQ 0 4 5\nRQ 0 1 3\nRQ 2 1 2\nRL 2 0 1\nRQ 2 6 2\nRL 0 0 0\nRL 0 0 0\nRL 0 0 0\nRQ 1 2 0\nRL 1 0 0\nRQ 0 6 6\nRL 2 0 1\nRQ 0 1 6\nRQ 1 1 6\nRQ 2 3 1\nRL 0 0 0\nRL 2 1 0\nRQ 0 3 1\nRL 0 0 0\nRQ 1 1 3\nRQ 0 4 2\nRQ 2 0 4\nRQ 2 0 5\nRQ 1 5 2\nRQ 2 3 1\nRL 0 0 0\nRQ 2 4 4'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: ef5cf222698629f42c7f1a10dcb46f6187c1441713da92407c81bf8bdd396ee6
+PASS 67: Modelo Python independente - sequencia 15
+argv: ('3', '4')
+customer.txt: '3,2\n2,1'
+commands.txt: 'RQ 0 0 0\nRQ 0 4 4\nRL 0 0 0\nRQ 1 1 2\nRQ 1 0 1\nRQ 1 4 1\nRQ 0 0 2\nRQ 0 1 0\nRQ 0 0 3\nRL 1 0 1\nRQ 0 3 2\nRQ 0 4 3\nRL 1 0 0\nRQ 0 2 3\nRL 1 0 0\nRQ 0 3 0\nRL 1 0 0\nRQ 0 1 4\nRQ 1 0 5\nRQ 1 1 5\nRQ 1 3 2\nRL 0 0 1\nRQ 0 4 1\nRQ 0 2 1\nRQ 0 2 5\nRL 0 2 0\nRQ 0 3 5\nRL 1 0 0\nRQ 0 4 4\nRL 0 1 0'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 30b2ce8fbd5239d322de26e82d7d14e090a4427a537768a55a2df6df2cd57d0c
+PASS 68: Modelo Python independente - sequencia 16
+argv: ('2', '7')
+customer.txt: '2,4'
+commands.txt: 'RQ 0 2 3\nRQ 0 1 2\nRQ 0 1 1\nRQ 0 0 5\nRQ 0 3 2\nRL 0 1 0\nRL 0 0 0\nRQ 0 0 3\nRQ 0 2 6\nRQ 0 1 1\nRQ 0 2 3\nRL 0 0 3\nRQ 0 0 6\nRQ 0 1 5\nRQ 0 1 6\nRL 0 0 1\nRQ 0 2 8\nRL 0 0 0\nRQ 0 3 2\nRQ 0 1 5\nRQ 0 1 2\nRQ 0 3 7\nRL 0 2 0\nRQ 0 3 2\nRQ 0 0 3\nRQ 0 0 4\nRQ 0 0 3\nRL 0 0 2\nRL 0 0 0\nRQ 0 2 8'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: d909dbd2e9478d91ce211465410698877159b2d9d1393603ec46c58025162a3c
+PASS 69: Modelo Python independente - sequencia 17
+argv: ('2', '3', '8', '6')
+customer.txt: '1,3,4,4\n1,1,3,6\n1,0,3,3\n1,1,0,1\n2,1,3,2'
+commands.txt: 'RQ 4 1 0 6 4\nRQ 0 2 1 3 2\nRQ 0 0 3 2 6\nRQ 4 3 2 3 0\nRQ 0 0 2 0 4\nRQ 0 3 3 5 1\nRQ 4 2 0 3 2\nRL 1 0 0 0 0\nRQ 3 3 1 6 2\nRQ 3 2 2 2 0\nRL 0 0 1 0 2\nRQ 4 1 2 7 4\nRL 0 0 1 0 2\nRL 1 0 0 0 0\nRQ 4 0 1 8 5\nRL 4 0 0 1 0\nRL 3 0 0 0 0\nRQ 2 0 0 1 7\nRQ 1 2 1 2 6\nRQ 0 2 4 9 1\nRL 1 0 0 0 0\nRQ 2 1 3 5 5\nRQ 3 1 1 9 4\nRQ 1 1 1 1 6\nRQ 4 3 0 4 2\nRQ 3 1 2 8 1\nRQ 1 2 3 8 7\nRQ 2 3 2 4 4\nRQ 3 1 4 7 4\nRQ 4 2 3 8 7'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 3b9155c0d360ebe0c713e736fa706cda74ee8da1b753a8bce74ea74eb6a5f7a6
+PASS 70: Modelo Python independente - sequencia 18
+argv: ('6', '6', '4', '1', '2')
+customer.txt: '5,3,3,0,1\n4,2,3,1,2'
+commands.txt: 'RQ 0 6 4 4 1 3\nRL 0 0 0 0 0 0\nRL 0 0 0 0 0 0\nRQ 0 7 4 0 2 2\nRQ 1 2 6 4 0 3\nRL 1 0 0 0 0 0\nRQ 1 6 6 4 2 0\nRQ 0 5 4 1 1 2\nRQ 1 2 1 5 2 1\nRL 1 0 0 0 0 0\nRL 1 0 0 0 0 0\nRQ 0 3 0 3 1 3\nRL 1 0 0 0 0 0\nRQ 1 7 6 3 1 2\nRQ 1 5 6 4 0 0\nRQ 0 5 3 5 1 2\nRL 0 0 0 0 0 0\nRQ 0 1 0 1 0 3\nRQ 1 1 7 3 0 0\nRL 0 0 0 0 0 0\nRQ 0 0 6 2 2 1\nRQ 1 4 0 0 0 1\nRL 1 3 0 0 0 0\nRL 0 0 0 0 0 0\nRQ 1 5 6 3 0 1\nRL 0 0 0 0 0 0\nRQ 0 7 2 1 0 3\nRL 1 1 0 0 0 0\nRQ 1 5 1 0 2 0\nRQ 0 1 5 4 1 1'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 8384d7234517b065e99a92f800a8ea40711220ae692c383be53be80ca691d443
+PASS 71: Modelo Python independente - sequencia 19
+argv: ('1',)
+customer.txt: '1'
+commands.txt: 'RQ 0 2\nRQ 0 0\nRQ 0 0\nRQ 0 0\nRQ 0 1\nRQ 0 2\nRQ 0 2\nRQ 0 2\nRQ 0 2\nRQ 0 2\nRL 0 0\nRQ 0 1\nRQ 0 2\nRQ 0 0\nRQ 0 2\nRL 0 0\nRQ 0 0\nRQ 0 2\nRQ 0 2\nRQ 0 0\nRQ 0 2\nRQ 0 1\nRQ 0 0\nRQ 0 0\nRQ 0 2\nRL 0 1\nRQ 0 2\nRQ 0 2\nRQ 0 0\nRQ 0 0'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: e0adbd2e4f7deaa8abb21c1a5e26fb9571c808e11e5bf43085c4c698078dda52
+PASS 72: Modelo Python independente - sequencia 20
+argv: ('8', '5', '5', '8', '6')
+customer.txt: '0,0,3,7,6\n2,5,5,2,0'
+commands.txt: 'RL 1 0 0 0 0 0\nRQ 1 1 3 1 3 4\nRL 0 0 0 0 0 0\nRQ 0 2 5 4 5 7\nRQ 1 5 1 2 8 1\nRQ 0 2 2 0 4 0\nRL 0 0 0 0 0 0\nRQ 1 6 2 6 4 0\nRQ 0 5 0 1 2 2\nRQ 0 3 0 1 3 5\nRQ 0 6 0 3 9 7\nRQ 0 2 3 1 1 6\nRQ 0 3 1 6 4 2\nRL 0 0 0 0 0 0\nRL 0 0 0 0 0 0\nRQ 0 0 6 3 2 4\nRQ 1 0 1 0 3 5\nRL 0 0 0 0 0 0\nRQ 1 5 0 2 1 2\nRQ 0 7 2 5 3 4\nRL 1 0 0 0 0 0\nRQ 1 1 2 1 4 4\nRQ 1 9 1 0 1 2\nRQ 1 4 6 6 7 2\nRQ 1 8 6 0 9 1\nRL 0 0 0 0 0 0\nRQ 1 3 4 6 4 7\nRQ 0 6 2 6 4 0\nRQ 1 0 4 4 6 5\nRQ 1 9 6 0 1 6'
+retorno: 0; stderr: ''
+Comparacao byte a byte: identica; SHA256: 0367bb234ebcbcedd768901f3d763b8032a6e21e265ac379851a8813eec3e561
+REVALIDACAO FONTE UNICO: 72 casos aprovados, 0 reprovados (52 casos de regressao + 20 sequencias de 30 operacoes contra modelo Python).
+
+CONFIRMACAO COMPLEMENTAR DO ALUNO - FONTE UNICO
+Origem: relato do aluno nesta conversa em 16/11/2026, sem captura integral da nova sessao.
+O aluno confirmou que entrou no WSL, executou a versao consolidada e obteve retorno 0. Relatou a mesma saida correta do exemplo.
+O erro de make clean mostrado anteriormente ocorreu no PowerShell/MinGW por ausencia do comando rm; nao corresponde ao ambiente Linux exigido.
+Nao foi fornecida nova transcricao completa de make clean/make/file para a versao consolidada. A verificacao isolada de ausencia do executavel apos clean permanece sem evidencia.

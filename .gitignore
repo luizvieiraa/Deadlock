@@ -1,0 +1,9 @@
+# Entradas fornecidas pelo professor e saida gerada pelo programa
+/lhcv/customer.txt
+/lhcv/commands.txt
+/lhcv/result.txt
+
+# Executaveis e arquivos objeto
+/lhcv/banker
+/lhcv/banker.exe
+*.o

@@ -9,7 +9,7 @@ O programa lê os recursos disponíveis pela linha de comando, os limites dos cl
 
 ## Requisitos e compilação
 
-Use um terminal Linux, Unix ou macOS com compilador C compatível com C11 e GNU Make. No Windows, utilize o Ubuntu/WSL. A compilação e a execução do exemplo foram confirmadas no Ubuntu/WSL.
+Use um terminal Linux, Unix ou macOS com compilador C compatível com C11 e GNU Make. No Windows, utilize o Ubuntu/WSL. A versão modular anterior foi confirmada no Ubuntu/WSL. A versão atual, em um único fonte, foi revalidada no Windows/GCC; o aluno também confirmou sua execução no WSL com retorno 0 e a saída esperada.
 
 Na raiz do repositório:
 
@@ -88,23 +88,17 @@ Se um erro ocorrer durante o processamento ou a escrita, `result.txt` pode conte
 
 ## Organização do código
 
-Todos os arquivos de implementação ficam em `lhcv`:
+A implementação está integralmente em `lhcv/banker.c`, o único arquivo `.c` do projeto. Não há cabeçalhos próprios. O arquivo reúne os tipos, a leitura e validação, as matrizes dinâmicas, a verificação de segurança, RQ/RL, a saída e `main`.
 
-| Arquivos | Responsabilidade |
+| Arquivo | Responsabilidade |
 | --- | --- |
-| `main.c` | Coordenar leitura, inicialização, processamento e liberação de memória. |
-| `input.c` e `input.h` | Ler e validar argumentos, clientes e comandos. |
-| `banker.c` e `banker.h` | Inicializar e liberar as matrizes dinâmicas. |
-| `safety.c` e `safety.h` | Verificar se o estado é seguro sem alterar o estado original. |
-| `request.c` e `request.h` | Processar solicitações `RQ`. |
-| `release.c` e `release.h` | Processar liberações `RL`. |
-| `output.c` e `output.h` | Executar a sequência de comandos e gravar `result.txt`. |
-| `Makefile` | Compilar e limpar os arquivos compilados. |
-| `evidencias.log` | Registrar os testes e as verificações realizadas. |
+| `lhcv/banker.c` | Implementação completa do programa. |
+| `lhcv/Makefile` | Compilar o único fonte e limpar os compilados. |
+| `lhcv/evidencias.log` | Registrar os testes realizados. |
 
 ## Validação
 
-O arquivo `lhcv/evidencias.log` registra 52 testes automatizados aprovados no Windows/GCC, incluindo comparação byte a byte com a saída de referência, entradas malformadas, arquivos ausentes, dimensões dinâmicas, recursos zero e valores extremos. Também contém a transcrição fornecida pelo aluno da compilação via `make` e da execução bem-sucedida do exemplo no Ubuntu/WSL.
+Após a consolidação, `lhcv/evidencias.log` registra 72 casos aprovados no Windows/GCC: 52 casos de regressão e 20 sequências de 30 operações comparadas com um modelo independente em Python. Incluem comparação byte a byte com a referência, entradas malformadas, arquivos ausentes, dimensões dinâmicas, zero e valores extremos. O log preserva a execução anterior no Ubuntu/WSL, correspondente à versão modular. Após a consolidação, o aluno confirmou nova execução no WSL com retorno 0 e a mesma saída correta, sem fornecer uma nova transcrição integral da compilação.
 
 Falhas de memória e permissões de leitura não foram injetadas nos testes. `make clean` foi executado antes da compilação no WSL; a ausência do executável imediatamente após a limpeza não foi verificada separadamente.
 
@@ -122,4 +116,4 @@ O comando remove `banker`, `banker.exe` e os arquivos `*.o`. Os arquivos de entr
 
 O GitHub deve conter código, Makefile, README, `evidencias.log` e o relatório em PDF. O `.gitignore` exclui as entradas do professor, a saída gerada, os executáveis e os arquivos objeto.
 
-Para o Classroom, o enunciado exige `lhcv.pdf` e `lhcv.tar`. O arquivo TAR deve conter a pasta `lhcv` com os códigos `.c`, os cabeçalhos `.h` e o Makefile. A preparação do relatório e do pacote de entrega corresponde às etapas seguintes.
+Para o Classroom, o enunciado exige `lhcv.pdf` e `lhcv.tar`. O arquivo TAR deve conter a pasta `lhcv` com apenas `banker.c` e o `Makefile`. A preparação do relatório e do pacote de entrega corresponde às etapas seguintes.
